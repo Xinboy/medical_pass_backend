@@ -11,10 +11,6 @@
 
     <artifactId>common_util</artifactId>
 
-    <packaging>jar</packaging>
-    <name>common-util</name>
-    <description>common util</description>
-
     <dependencies>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
