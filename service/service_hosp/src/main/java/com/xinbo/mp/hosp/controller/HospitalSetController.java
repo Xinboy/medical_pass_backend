@@ -107,7 +107,7 @@ public class HospitalSetController {
     }
 
     @ApiOperation(value = "删除医院设置")
-    @DeleteMapping
+    @DeleteMapping("/")
     public Result delete(@RequestBody List<Long> ids) {
         boolean result = hospitalSetService.removeByIds(ids);
         if (result) {
@@ -117,4 +117,41 @@ public class HospitalSetController {
         }
     }
 
+    @ApiOperation(value = "删除指定医院设置")
+    @DeleteMapping("/{id}")
+    public Result deleteById(@PathVariable Long id) {
+        boolean result = hospitalSetService.removeById(id);
+        if (result) {
+            return Result.ok();
+        } else {
+            return Result.fail();
+        }
+    }
+
+    @ApiOperation(value = "锁定指定医院设置")
+    @PutMapping("/{id}/{status}")
+    public Result lock(@PathVariable Long id,
+                       @PathVariable Integer status) {
+        HospitalSet set = hospitalSetService.getById(id);
+        set.setStatus(status);
+
+        boolean result = hospitalSetService.updateById(set);
+        if (result) {
+            return Result.ok();
+        } else {
+            return Result.fail();
+        }
+    }
+
+    @ApiOperation(value = "发送签名密钥")
+    @GetMapping("/{id}/sign-key")
+    public Result lock(@PathVariable Long id) {
+        HospitalSet set = hospitalSetService.getById(id);
+
+        //TODO 后期可以通过发送短信提供签名密钥
+        if (set == null) {
+            return Result.build(ResultCodeEnum.FAIL.getCode(), "没有获取到指定医院的签名密钥");
+        }
+        return Result.ok(set);
+    }
 }
